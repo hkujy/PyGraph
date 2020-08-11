@@ -13,14 +13,13 @@ class LinkClass(object):
         self.head = _head
         self.weight = 0
           
-
 def plot_Dial_net(_links):
     """
         plot the network flow for the dial network
     """
 
     G = nx.DiGraph()
-    num = 9
+    num = 4
     nodes = list(range(num))  # [0,1,2,3,4,5]
     # 将节点添加到网络中
     G.add_nodes_from(nodes)  # 从列表中加点
@@ -47,7 +46,9 @@ def plot_Dial_net(_links):
     # edges.append((7,8))
     G.add_edges_from(edges)
 
-    coordinates = [[1, 3], [2, 3], [3, 3], [1, 2], [2, 2], [3, 2],[1, 1], [2, 1], [3, 1]]
+    # coordinates = [[1, 3], [2, 3], [3, 3], [1, 2], [2, 2], [3, 2],[1, 1], [2, 1], [3, 1]]
+    # coordinates = [[1, 2], [2, 2], [3, 2], [4, 2]]
+    coordinates = [[1, 2], [1, 1], [2, 1], [3, 3]]
 
     for l in _links:
         tail = l.tail
@@ -86,14 +87,33 @@ def plot_Dial_net(_links):
     # nx.draw_networkx_edges(G, npos, arrows=True, arrowstyle = '-|>',  connectionstyle='arc3, rad = 0.15')
     colors = [G[u][v]['color'] for u,v in edges]
     weights = [G[u][v]['weight'] for u,v in edges]
-    nx.draw_networkx_edges(G, npos, arrows=True, arrowstyle = '-|>', edge_color=colors, width=weights)
+    for edge in G.edges(data=True):
+        # print(edge[0],edge[1])
+        print(edge)
+        if edge[0]==1 and edge[1]==3:
+            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = 0.3')
+            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
+        elif edge[0]==0 and edge[1]==2:
+            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = 0.3')
+            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
+        elif edge[0]==0 and edge[1]==3:
+            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = -0.3')
+            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
+        else:
+            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
+            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = -0.1')
+
     # D = nx.drawing.nx_agraph.to_agraph(G)
     # pos_attrs = {}
     # for node, coords in nx.spring_layout(G).items():
     # pos_attrs[node] = (coords[0], coords[1] + 0.08)
-
-    nx.draw_networkx_edge_labels(G,npos, edge_labels=edge_labels,font_size=10)
-    # nx.draw_networkx_edge_labels(G,npos, font_size=10)
+    
+    # nx.draw_networkx_edge_labels(G,npos, edge_labels=edge_labels,font_size=10)
+    print(npos)
+    print(edge_labels)
+    # nx.draw_networkx_edge_labels(G,npos, edge_labels=edge_labels,font_size=10)
+    # nx.draw_networkx_edge_labels(G,pos=nx.spring_layout(G),edge_labels=edge_labels)
+    nx.draw_networkx_edge_labels(G,npos,edge_labels=edge_labels)
     # position=nx.drawing.nx_agraph.graphviz_layout(G,prog='twopi',args='')
 
     for key, spine in ax.spines.items():
@@ -101,30 +121,30 @@ def plot_Dial_net(_links):
         # if key == 'right' or key == 'top':
         spine.set_visible(False)
     # nx.draw(G, npos, with_labels=True,
-    #         connectionstyle='arc3, rad = 0.15',
-    #         node_size=800)
+            # connectionstyle='arc3, rad = 0.15',
+            # node_size=800)
     plt.axis('off')
     plt.show()
 
 if __name__ == "__main__":
     # execute only if run as a script
     links = []
-    links.append(LinkClass(0,0,1))
-    links.append(LinkClass(1,1,2))
-    links.append(LinkClass(2,0,3))
-    links.append(LinkClass(3,1,4))
-    links.append(LinkClass(4,2,5))
-    links.append(LinkClass(5,3,4))
-    links.append(LinkClass(6,4,5))
-    links.append(LinkClass(7,3,6))
-    links.append(LinkClass(8,4,7))
-    links.append(LinkClass(9,5,8))
-    links.append(LinkClass(10,6,7))
-    links.append(LinkClass(11,7,8))
+    links.append(LinkClass(0,0,3))
+    links.append(LinkClass(1,0,1))
+    links.append(LinkClass(2,1,2))
+    links.append(LinkClass(3,2,3))
+    links.append(LinkClass(4,0,2))
+    links.append(LinkClass(5,1,3))
+    # links.append(LinkClass(6,4,5))
+    # links.append(LinkClass(7,3,6))
+    # links.append(LinkClass(8,4,7))
+    # links.append(LinkClass(9,5,8))
+    # links.append(LinkClass(10,6,7))
+    # links.append(LinkClass(11,7,8))
     for l in links:
         l.weight = 2 
-    links[-1].weight= 0
-    links[-5].weight= 0
+    links[-1].weight= 3
+    links[-2].weight= 5
 
     plot_Dial_net(links)
  
