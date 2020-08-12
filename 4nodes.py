@@ -18,6 +18,7 @@ def plot_Dial_net(_links):
         plot the network flow for the dial network
     """
 
+    fig, ax = plt.subplots(figsize=(9,6))
     G = nx.DiGraph()
     num = 4
     nodes = list(range(num))  # [0,1,2,3,4,5]
@@ -47,8 +48,8 @@ def plot_Dial_net(_links):
     G.add_edges_from(edges)
 
     # coordinates = [[1, 3], [2, 3], [3, 3], [1, 2], [2, 2], [3, 2],[1, 1], [2, 1], [3, 1]]
-    # coordinates = [[1, 2], [2, 2], [3, 2], [4, 2]]
-    coordinates = [[1, 2], [1, 1], [2, 1], [3, 3]]
+    coordinates = [[1, 2], [3, 2], [5, 2], [7, 2]]
+    # coordinates = [[1, 1], [1, 2], [2, 1], [3, 2]]
 
     for l in _links:
         tail = l.tail
@@ -77,13 +78,13 @@ def plot_Dial_net(_links):
     y_num = (y_max - y_min) / 10
     # print(x_max, y_max, x_min, y_min)
     plt.xlim(x_min - x_num, x_max + x_num)
-    plt.ylim(y_min - y_num, y_max + y_num)
+    plt.ylim(y_min - y_num-1, y_max + y_num+1)
     fig=plt.gcf()
     ax=plt.gca()
 
     # pos=nx.circular_layout(G, center=(0, 0))
-    nx.draw_networkx_labels(G, npos, labels=labels, font_size=12, font_color='k', font_family='sans-serif', font_weight='normal', alpha=1.0, bbox=None, ax=None)
     nx.draw_networkx_nodes(G, npos,node_color='skyblue',cmap=plt.get_cmap('jet'))
+    nx.draw_networkx_labels(G, npos, labels=labels, font_size=12, font_color='k', font_family='sans-serif', font_weight='normal', alpha=1.0, bbox=None, ax=None)
     # nx.draw_networkx_edges(G, npos, arrows=True, arrowstyle = '-|>',  connectionstyle='arc3, rad = 0.15')
     colors = [G[u][v]['color'] for u,v in edges]
     weights = [G[u][v]['weight'] for u,v in edges]
@@ -91,38 +92,42 @@ def plot_Dial_net(_links):
         # print(edge[0],edge[1])
         print(edge)
         if edge[0]==1 and edge[1]==3:
-            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = 0.3')
-            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
+            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = 0.4')
+            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
         elif edge[0]==0 and edge[1]==2:
-            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = 0.3')
-            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
+            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = 0.4',label_pos = 0.2)
+            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
         elif edge[0]==0 and edge[1]==3:
-            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = -0.3')
-            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
+            nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = -0.4',label_pos = 0.2)
+            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
         else:
             nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights)
-            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = -0.1')
+            # nx.draw_networkx_edges(G, npos, arrows=True, edgelist=[(edge[0],edge[1])],arrowstyle = '-|>', edge_color=colors, width=weights,connectionstyle='arc3, rad = -0.5',label_pos = 0.2)
 
-    # D = nx.drawing.nx_agraph.to_agraph(G)
-    # pos_attrs = {}
-    # for node, coords in nx.spring_layout(G).items():
-    # pos_attrs[node] = (coords[0], coords[1] + 0.08)
     
-    # nx.draw_networkx_edge_labels(G,npos, edge_labels=edge_labels,font_size=10)
     print(npos)
     print(edge_labels)
-    # nx.draw_networkx_edge_labels(G,npos, edge_labels=edge_labels,font_size=10)
-    # nx.draw_networkx_edge_labels(G,pos=nx.spring_layout(G),edge_labels=edge_labels)
-    nx.draw_networkx_edge_labels(G,npos,edge_labels=edge_labels)
-    # position=nx.drawing.nx_agraph.graphviz_layout(G,prog='twopi',args='')
+    # pos_attrs = {}
+    # for node, coords in npos.items():
+        # pos_attrs[node] = (coords[0]+0.1, coords[1] + 0.1)
+    # print(pos_attrs)
+    # nx.draw_networkx_edge_labels(G,pos_attrs,edge_labels=edge_labels,label_pos = 0.4)
+    mylable = ["L1","L2","L3","L4","L5","L6"]
+    # coordinates = [[1, 2], [3, 2], [5, 2], [7, 2]]
+    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+    x = [2,4,6,4,2.8,5] 
+    ax.text(x[0], 1.9, mylable[0],fontsize=12)
+    ax.text(x[1], 1.9, mylable[1],fontsize=12)
+    ax.text(x[2], 1.9, mylable[2],fontsize=12)
+    ax.text(x[3], 2.452, mylable[2],fontsize=12)
+    ax.text(x[4], 1.602, mylable[2],fontsize=12)
+    ax.text(x[5], 1.602, mylable[2],fontsize=12)
 
     for key, spine in ax.spines.items():
         # 'left', 'right', 'bottom', 'top'
         # if key == 'right' or key == 'top':
         spine.set_visible(False)
-    # nx.draw(G, npos, with_labels=True,
-            # connectionstyle='arc3, rad = 0.15',
-            # node_size=800)
+
     plt.axis('off')
     plt.show()
 
